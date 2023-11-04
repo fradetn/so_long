@@ -21,7 +21,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ) $(MLX)
 	@echo "$(YELLOW)Compilation en cours..."
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) -L$(MLX_DIR) -lX11 -lXext -lm
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(MLX) -lX11 -lXext
 	@echo "$(GREEN)Compilation terminée.\n"
 
 $(OBJ_DIR):
@@ -31,7 +31,7 @@ $(OBJ_DIR):
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 	@echo "$(YELLOW)Compilation de $<..."
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -I$(MLX_DIR) -c $< -o $@
 	@echo "$(GREEN)Compilation terminée.\n"
 
 $(MLX):
