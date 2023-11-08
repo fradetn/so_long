@@ -6,7 +6,7 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 00:34:00 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/06 06:07:49 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/08 07:53:31 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_coord	*create_coord(int x, int y)
 {
-	t_coord *coord;
+	t_coord	*coord;
 
 	coord = (t_coord *)malloc(sizeof(t_coord));
 	if (!coord)
@@ -82,4 +82,17 @@ t_list	*get_all_collec(char **tab)
 		x++;
 	}
 	return (list);
+}
+
+t_game_obj	*fill_objs(char **tab)
+{
+	t_game_obj *game_obj;
+
+	game_obj = (t_game_obj *)malloc(sizeof(t_game_obj));
+	if (!game_obj)
+		return (NULL);
+	game_obj->collecs = get_all_collec(tab);
+	game_obj->player = get_char_pos(tab, 'P');
+	game_obj->end = get_char_pos(tab, 'E');
+	return (game_obj);
 }

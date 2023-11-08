@@ -6,13 +6,13 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 06:07:20 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/08 06:23:56 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/08 07:45:30 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-static size_t	check_format(char **tab)
+size_t	check_format(char **tab)
 {
 	size_t		len;
 	size_t		i;
@@ -41,33 +41,7 @@ static size_t	check_format(char **tab)
 	return (0);
 }
 
-static int	check_char(char c1, char c2, int is_c)
-{
-	if (c2 == 'C')
-	{
-		if (is_c == 1)
-			return (1);
-		if (is_c == 0)
-		{
-			if (c1 == c2)
-				return (1);
-			else
-				return (0);
-		}
-	}
-	if (is_c == 1)
-	{
-		if (c1 == c2)
-			return (0);
-		else
-			return (1);
-	}
-	if (c1 == c2)
-		return (1);
-	return (0);
-} 
-
-static int	check_objs(char **tab)
+int	check_objs(char **tab)
 {
 	int	x;
 	int	y;
@@ -94,52 +68,6 @@ static int	check_objs(char **tab)
 	if (is_c == 1 && is_e == 1 && is_p == 1)
 		return (0);
 	return (1);
-}
-
-static int	is_end(t_coord *actual, t_coord *end)
-{
-	if (actual->x == end->x && actual->y == end->y)
-		return (1);
-	return (0);
-}
-
-static void	get_voisins_y(char **tab, t_list **list, t_coord *actual)
-{
-	t_list	*new;
-	t_coord *tmp;
-
-	if (tab[actual->x][actual->y + 1] != '1')
-	{
-		tmp = create_coord(actual->x, actual->y + 1);
-		new = ft_lstnew(tmp);
-		ft_lstadd_back(list, new);
-	}
-	if (tab[actual->x][actual->y - 1] != '1')
-	{
-		tmp = create_coord(actual->x, actual->y - 1);
-		new = ft_lstnew(tmp);
-		ft_lstadd_back(list, new);
-	}
-}
-
-static void	get_voisins(char **tab, t_list **voisins, t_coord *actual)
-{
-	t_list	*new;
-	t_coord *tmp;
-
-	if (tab[actual->x + 1][actual->y] != '1')
-	{
-		tmp = create_coord(actual->x + 1, actual->y);
-		new = ft_lstnew(tmp);
-		ft_lstadd_back(voisins, new);
-	}
-	if (tab[actual->x - 1][actual->y] != '1')
-	{
-		tmp = create_coord(actual->x - 1, actual->y);
-		new = ft_lstnew(tmp);
-		ft_lstadd_back(voisins, new);
-	}
-	get_voisins_y(tab, voisins, actual);
 }
 
 int	check_path(char **tab, t_coord *actual ,t_coord *end)
@@ -171,7 +99,7 @@ int	check_path(char **tab, t_coord *actual ,t_coord *end)
 	return (1);
 }
 
-static int	check_collecs(char **tab, t_coord *start, t_list *collecs)
+int	check_collecs(char **tab, t_coord *start, t_list *collecs)
 {
 	char	**cpy;
 

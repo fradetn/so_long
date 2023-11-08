@@ -1,56 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_long_utils.c                                    :+:      :+:    :+:   */
+/*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/08 07:39:27 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/08 07:50:55 by nfradet          ###   ########.fr       */
+/*   Created: 2023/11/08 07:49:52 by nfradet           #+#    #+#             */
+/*   Updated: 2023/11/08 07:50:04 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void aff(void *co)
+void	ft_free(char **tab, t_game_obj *go)
 {
-	ft_printf("(%d, %d)\n", ((t_coord *)co)->x, ((t_coord *)co)->y);
+	free(go->end);
+	free(go->player);
+	ft_lstclear(&(go->collecs), &ft_free_coord);
+	ft_free_tab(tab);
+	free(go);
 }
 
-void aff_tab(char **tab)
+void	ft_free_tab(char **tab)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (tab[i])
 	{
-		ft_printf("%s\n", tab[i]);
+		free(tab[i]);
 		i++;
 	}
+	free(tab[i]);
+	free(tab);
 }
 
-int	ft_tablen(char **tab)
+void	ft_free_coord(void *coord)
 {
-	int	len;
-
-	len = 0;
-	while (tab[len])
-		len++;
-	return (len);
-}
-
-char	**ft_tabdup(char **tab)
-{
-	char	**cpy;
-	int		i;
-
-	i = 0;
-	cpy = malloc(sizeof(char *) * (ft_tablen(tab) + 1));
-	while (tab[i])
-	{
-		cpy[i] = ft_strdup(tab[i]);
-		i++;
-	}
-	cpy[i] = 0;
-	return (cpy);
+	free(coord);
 }
