@@ -1,13 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/08 06:07:24 by nfradet           #+#    #+#             */
+/*   Updated: 2023/11/08 06:07:24 by nfradet          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "so_long.h"
 
 void	ft_free(char **tab, t_game_obj *go)
 {
-	int i;
-
-	i = 0;
 	free(go->end);
 	free(go->player);
 	ft_lstclear(&(go->collecs), &ft_free_coord);
+	ft_free_tab(tab);
+	free(go);
+}
+
+void	ft_free_tab(char **tab)
+{
+	int i;
+
+	i = 0;
 	while (tab[i])
 	{
 		free(tab[i]);
@@ -40,6 +58,18 @@ void aff(void *co)
 	ft_printf("(%d, %d)\n", ((t_coord *)co)->x, ((t_coord *)co)->y);
 }
 
+void aff_tab(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+	{
+		ft_printf("%s\n", tab[i]);
+		i++;
+	}
+}
+
 int main(int argc, char **argv)
 {
 	// void	*mlx_ptr;
@@ -51,14 +81,15 @@ int main(int argc, char **argv)
 	file_name = ft_strjoin("maps/", argv[1]);
 
 	tab = file_to_tab(file_name);
+	// ft_printf("%s", file_name);
 	game_obj = fill_objs(tab);
-	if (check_map(tab, game_obj) == 1)
+ 	if (check_map(tab, game_obj) == 1)
 	{
 		ft_printf("La map fournie est invalide !");
 		ft_free(tab, game_obj);
 		free(file_name);
 		return (1);
-	}
+	} 
 	// ft_lstiter(game_obj->collecs, &aff);
 
 	// fd = open(file_name, O_RDONLY);

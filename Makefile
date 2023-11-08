@@ -22,7 +22,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ) $(MLX) $(LIBFT)
 	@echo "$(YELLOW)Compilation en cours..."
-	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(MLX) -lX11 -lXext -o $(NAME)
+	@$(CC) -g $(CFLAGS) $(OBJ) $(LIBFT) $(MLX) -lX11 -lXext -o $(NAME)
 	@echo "$(GREEN)Compilation terminée.\n"
 
 $(OBJ_DIR):
@@ -32,7 +32,7 @@ $(OBJ_DIR):
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 	@echo "$(YELLOW)Compilation de $<..."
-	@$(CC) $(CFLAGS) -I$(MLX_DIR) -c $< -o $@
+	@$(CC) -g $(CFLAGS) -I$(MLX_DIR) -c $< -o $@
 	@echo "$(GREEN)Compilation terminée.\n"
 
 $(MLX):
