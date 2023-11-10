@@ -6,7 +6,7 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 07:34:39 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/08 07:53:01 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/10 15:43:01 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,15 @@ typedef struct s_game_obj
 	t_coord	*player;
 	t_coord	*end;
 }	t_game_obj;
+
+typedef struct s_data
+{
+	void	*mlx_ptr;
+	void	*win_ptr;
+	void	*img_ptr;
+	int		w;
+	int		h;
+}	t_data;
 
 /*read_file.c*/
 char		**file_to_tab(const char *file);

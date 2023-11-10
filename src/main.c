@@ -6,17 +6,25 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 06:07:24 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/08 08:05:34 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/10 15:48:58 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
+
+static int	key_hook(int keycode, t_data *data)
+{
+	(void) data;
+	ft_printf("keycode : %d\n", keycode);
+	return (0);
+}
+
 int main(int argc, char **argv)
 {
-	void	*mlx_ptr;
 	char		**tab;
 	char		*file_name;
+	t_data		data;
 	t_game_obj	*game_obj;
 
 	(void) argc;
@@ -32,12 +40,23 @@ int main(int argc, char **argv)
 		free(file_name);
 		return (1);
 	}
-	mlx_ptr = mlx_init();
-	mlx_new_window(mlx_ptr, 300, 300, "test");
-	mlx_loop(mlx_ptr);
+
+	data.mlx_ptr = mlx_init();
+	if (!data.mlx_ptr)
+		return (1);
+	data.img_ptr = mlx_xpm_file_to_image(data.mlx_ptr, "./assets/tileset_wall.xpm", &data.w, &data.h);
+	if (!data.img_ptr)
+		return (1);
+	data.win_ptr = mlx_new_window(data.mlx_ptr, 300, 300, "test");
+	if (!data.win_ptr)
+		return (free(data.mlx_ptr), 1);
+	mlx_put_image_to_window(data.mlx_ptr,data.win_ptr, data.img_ptr, 0, 0);
+	mlx_key_hook(data.win_ptr, key_hook, &data);
+	mlx_loop(data.mlx_ptr);
 	free(file_name);
 	ft_free(tab, game_obj);
-} 
+	return (0);
+}
 
 /* int main(int argc, char **argv)
 {

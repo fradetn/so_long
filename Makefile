@@ -18,6 +18,7 @@ CFLAGS = -Wall -Werror -Wextra
 SRC = $(wildcard $(SRC_DIR)*.c)
 OBJ = $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC))
 
+
 all: $(NAME)
 
 $(NAME): $(OBJ) $(MLX) $(LIBFT)
