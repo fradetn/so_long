@@ -7,7 +7,7 @@ SRC_DIR = src/
 MLX_DIR = minilibx-linux/
 LIBFT_DIR = libft/
 
-NAME = so_long.a
+NAME = so_long
 MLX = $(MLX_DIR)libmlx.a
 LIBFT = $(LIBFT_DIR)libft.a
 

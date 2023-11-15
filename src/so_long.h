@@ -6,7 +6,7 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 07:34:39 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/10 15:43:01 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/15 17:32:50 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,37 @@
 # include <X11/X.h>
 # include <fcntl.h>
 
+# define CHARAC "./assets/brendon.xpm"
+# define WALL "./assets/tree.xpm"
+# define GROUND "./assets/ground.xpm"
+# define END "./assets/house.xpm"
+# define COLLEC "./assets/pokeball.xpm"
+
 typedef struct s_coord
 {
 	int	x;
 	int	y;
 }	t_coord;
+
+typedef struct s_img
+{
+	void	*img_ptr;
+    char	*data;
+	int		w;
+	int		h;
+	int		bpp;
+    int		size_line;
+    int		endian;
+}	t_img;
+
+typedef struct s_assets
+{
+	t_img	character;
+	t_img	wall;
+	t_img	ground;
+	t_img	poke;
+	t_img	end;
+}	t_assets;
 
 typedef struct s_game_obj
 {
@@ -34,12 +60,15 @@ typedef struct s_game_obj
 
 typedef struct s_data
 {
-	void	*mlx_ptr;
-	void	*win_ptr;
-	void	*img_ptr;
-	int		w;
-	int		h;
+	void		*mlx_ptr;
+	void		*win_ptr;
+	t_assets	assets;
+	t_data		game_obj;
+	char		**map;
 }	t_data;
+
+
+
 
 /*read_file.c*/
 char		**file_to_tab(const char *file);
@@ -74,5 +103,9 @@ int		check_objs(char **tab);
 
 /*main.c*/
 int			main(int argc, char **argv);
+int			ft_init_mlx(t_data *data, char **tab);
+int			ft_create_images(t_data *data);
+void		ft_put_map(t_data *data, char **tab);
+int			key_hook(int keycode, t_data *data);
 
 #endif
