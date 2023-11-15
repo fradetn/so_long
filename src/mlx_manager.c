@@ -6,13 +6,13 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 19:09:16 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/14 20:59:04 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/15 20:19:54 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int	ft_init_mlx(t_data *data, char **tab)
+int	ft_init_mlx(t_data *data)
 {
 	data->mlx_ptr = mlx_init();
 	if (!data->mlx_ptr)
@@ -22,7 +22,7 @@ int	ft_init_mlx(t_data *data, char **tab)
 		return (free(data->mlx_ptr), 1);
 	if (!ft_create_images(data))
 		return (1);
-	ft_put_map(data, tab);
+	ft_put_map(data);
 	return (0);
 }
 
@@ -60,23 +60,6 @@ void	ft_put_image(t_data *data, t_img img, t_coord i)
  		img.img_ptr, i.y * 64, i.x * 64);
 }
 
-void	ft_put_ground(t_data *data, char **tab)
-{
-	t_coord	i;
-
-	i.x = 0;
-	while (tab[i.x])
-	{
-		i.y = 0;
-		while (tab[i.x][i.y])
-		{
-			ft_put_image(data, data->assets.ground, i);
-			i.y++;
-		}
-		i.x++;
-	}
-}
-
 void draw_transparency(t_data *data, t_img img, t_coord c)
 {
 	t_coord i;
@@ -108,27 +91,34 @@ void draw_transparency(t_data *data, t_img img, t_coord c)
 		i.x++;
 	}
 	ft_put_image(data, cpy, c);
+	free(cpy.img_ptr);
 }
 
-void	ft_put_map(t_data *data, char **tab)
+void ft_refresh(t_data *data, t_coord i)
+{
+	if (data->map[i.x][i.y] == '0')
+		ft_put_image(data, data->assets.ground, i);
+	else if (data->map[i.x][i.y] == '1')
+		draw_transparency(data, data->assets.wall, i);
+	else if (data->map[i.x][i.y] == 'P')
+		draw_transparency(data, data->assets.character, i);
+	else if (data->map[i.x][i.y] == 'E')
+		draw_transparency(data, data->assets.end, i);
+	else if (data->map[i.x][i.y] == 'C')
+		draw_transparency(data, data->assets.poke, i);
+}
+
+void	ft_put_map(t_data *data)
 {
 	t_coord	i;
 
 	i.x = 0;
-	ft_put_ground(data, tab);
-	while (tab[i.x])
+	while (data->map[i.x])
 	{
 		i.y = 0;
-		while (tab[i.x][i.y])
+		while (data->map[i.x][i.y])
 		{
-			if (tab[i.x][i.y] == '1')
-				draw_transparency(data, data->assets.wall, i);
-			else if (tab[i.x][i.y] == 'P')
-				draw_transparency(data, data->assets.character, i);
-			else if (tab[i.x][i.y] == 'E')
-				draw_transparency(data, data->assets.end, i);
-			else if (tab[i.x][i.y] == 'C')
-				draw_transparency(data, data->assets.poke, i);
+			ft_refresh(data, i);
 			i.y++;
 		}
 		i.x++;

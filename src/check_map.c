@@ -6,7 +6,7 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 06:07:20 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/15 17:25:00 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/15 20:51:45 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,15 +99,17 @@ int	check_path(char **tab, t_coord *actual ,t_coord *end)
 	return (1);
 }
 
-int	check_collecs(char **tab, t_coord *start, t_list *collecs)
+int	check_collecs(t_data *data, t_coord *start, t_list *collecs)
 {
 	char	**cpy;
 
 	while (collecs)
 	{
-		cpy = ft_tabdup(tab);
+		cpy = ft_tabdup(data->map);
+		cpy[data->game_obj.end->x][data->game_obj.end->y] = '1';
 		if (check_path(cpy, start, collecs->content) == 1)
 		{
+			ft_printf("Le joueur ne peut pas atteindre un collectible !\n");
 			ft_free_tab(cpy);
 			return (1);
 		}
@@ -117,22 +119,30 @@ int	check_collecs(char **tab, t_coord *start, t_list *collecs)
 	return (0);
 }
 
-int	check_map(char **tab, t_game_obj *game_obj)
+int	check_map(t_data *data)
 {
 	char	**cpy;
 
-	if (check_format(tab) == 1)
-		return (1);
-	if (check_objs(tab) == 1)
-		return (1);
-	cpy = ft_tabdup(tab);
-	if (check_path(cpy, game_obj->player, game_obj->end) == 1)
+	if (check_format(data->map) == 1)
 	{
+		ft_printf("Le format de la map est invalide !\n");
+		return (1);
+	}
+	if (check_objs(data->map) == 1)
+	{
+		ft_printf("La map ne contient pas les objets demandes !\n");
+		return (1);
+	}
+	cpy = ft_tabdup(data->map);
+	if (check_path(cpy, data->game_obj.player, data->game_obj.end) == 1)
+	{
+		ft_printf("Le joueur ne peut pas atteindre la sortie !\n");
 		ft_free_tab(cpy);
 		return (1);
 	}
 	ft_free_tab(cpy);
-	if (check_collecs(tab, game_obj->player, game_obj->collecs) == 1)
+	if (check_collecs(data, data->game_obj.player, 
+	data->game_obj.collecs) == 1)
 		return (1);
 	return (0);
 }

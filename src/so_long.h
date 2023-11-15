@@ -6,7 +6,7 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 07:34:39 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/15 17:32:50 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/15 21:15:54 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,10 @@ typedef struct s_data
 	void		*mlx_ptr;
 	void		*win_ptr;
 	t_assets	assets;
-	t_data		game_obj;
+	t_game_obj	game_obj;
 	char		**map;
+	int			nb_poke;
+	int			nb_move;
 }	t_data;
 
 
@@ -78,12 +80,15 @@ int			nb_line(int fd);
 t_list		*get_all_collec(char **tab);
 t_coord		*create_coord(int x, int y);
 t_coord		*get_char_pos(char **tab, char c);
-t_game_obj	*fill_objs(char **tab);
+t_game_obj	fill_objs(char **tab);
 
 /*ft_free.c*/
-void		ft_free(char **tab, t_game_obj *go);
+void		ft_free(t_data *data);
 void		ft_free_tab(char **tab);
 void		ft_free_coord(void *coord);
+void		ft_free_go(t_game_obj *go);
+void		ft_free_asset(t_assets assets);
+void		ft_free_inv(t_data *data);
 
 /*so_long_utils.c*/
 void		aff(void *co);
@@ -96,16 +101,17 @@ size_t	check_format(char **tab);
 void	get_voisins(char **tab, t_list **voisins, t_coord *actual);
 int		is_end(t_coord *actual, t_coord *end);
 int		check_char(char c1, char c2, int is_c);
-int		check_map(char **tab, t_game_obj *game_obj);
-int		check_collecs(char **tab, t_coord *start, t_list *collecs);
+int		check_map(t_data *data);
+int		check_collecs(t_data *data, t_coord *start, t_list *collecs);
 int		check_path(char **tab, t_coord *actual ,t_coord *end);
 int		check_objs(char **tab);
 
 /*main.c*/
 int			main(int argc, char **argv);
-int			ft_init_mlx(t_data *data, char **tab);
+int			ft_init_mlx(t_data *data);
 int			ft_create_images(t_data *data);
-void		ft_put_map(t_data *data, char **tab);
+void		ft_put_map(t_data *data);
 int			key_hook(int keycode, t_data *data);
+void 		ft_refresh(t_data *data, t_coord i);
 
 #endif

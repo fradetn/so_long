@@ -6,7 +6,7 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 00:34:00 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/10 15:25:43 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/15 19:20:06 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,15 +84,15 @@ t_list	*get_all_collec(char **tab)
 	return (list);
 }
 
-t_game_obj	*fill_objs(char **tab)
+t_game_obj	fill_objs(char **tab)
 {
-	t_game_obj *game_obj;
+	t_game_obj game_obj;
 
-	game_obj = (t_game_obj *)malloc(sizeof(t_game_obj));
-	if (!game_obj)
-		return (NULL);
-	game_obj->collecs = get_all_collec(tab);
-	game_obj->player = get_char_pos(tab, 'P');
-	game_obj->end = get_char_pos(tab, 'E');
+	// game_obj = (t_game_obj *)malloc(sizeof(t_game_obj));
+	// if (!game_obj)
+	// 	return (NULL);
+	game_obj.collecs = get_all_collec(tab);
+	game_obj.player = get_char_pos(tab, 'P');
+	game_obj.end = get_char_pos(tab, 'E');
 	return (game_obj);
 }

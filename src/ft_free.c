@@ -6,19 +6,39 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 07:49:52 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/10 15:25:39 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/15 21:07:08 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	ft_free(char **tab, t_game_obj *go)
+void	ft_free_inv(t_data *data)
+{
+	ft_free_go(&data->game_obj);
+	ft_free_tab(data->map);
+}
+
+void	ft_free(t_data *data)
+{
+	ft_free_go(&data->game_obj);
+	ft_free_tab(data->map);
+	ft_free_asset(data->assets);
+}
+
+void	ft_free_asset(t_assets assets)
+{
+	free(assets.character.img_ptr);
+	free(assets.wall.img_ptr);
+	free(assets.ground.img_ptr);
+	free(assets.poke.img_ptr);
+	free(assets.end.img_ptr);
+}
+
+void	ft_free_go(t_game_obj *go)
 {
 	free(go->end);
 	free(go->player);
 	ft_lstclear(&(go->collecs), &ft_free_coord);
-	ft_free_tab(tab);
-	free(go);
 }
 
 void	ft_free_tab(char **tab)
