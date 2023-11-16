@@ -6,7 +6,7 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 00:34:00 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/15 19:20:06 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/16 00:42:02 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,6 @@ t_game_obj	fill_objs(char **tab)
 	game_obj.collecs = get_all_collec(tab);
 	game_obj.player = get_char_pos(tab, 'P');
 	game_obj.end = get_char_pos(tab, 'E');
+	game_obj.enn1 = get_char_pos(tab, '2');
 	return (game_obj);
 }

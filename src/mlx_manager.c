@@ -6,7 +6,7 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 19:09:16 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/15 20:19:54 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/16 00:39:28 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,30 +26,36 @@ int	ft_init_mlx(t_data *data)
 	return (0);
 }
 
+int	ft_create_charac(t_data *data, t_assets *assets)
+{
+	assets->charac_down.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, 
+		CHARAC_D, &assets->charac_down.w, &assets->charac_down.h);
+	assets->charac_up.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, 
+		CHARAC_U, &assets->charac_up.w, &assets->charac_up.h);
+	assets->charac_left.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, 
+		CHARAC_L, &assets->charac_left.w, &assets->charac_left.h);
+	assets->charac_right.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, 
+		CHARAC_R, &assets->charac_right.w, &assets->charac_right.h);
+	return (1);
+}
+
 int	ft_create_images(t_data *data)
 {
 	t_assets	assets;
 
-	assets.character.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, 
-		CHARAC, &assets.character.w, &assets.character.h);
-	if (!assets.character.img_ptr)
-		return (0);
+	ft_create_charac(data, &assets);
 	assets.wall.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, WALL, 
 		&assets.wall.w, &assets.wall.h);
-	if (!assets.wall.img_ptr)
-		return (0);
 	assets.ground.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, GROUND, 
 		&assets.ground.w, &assets.ground.h);
-	if (!assets.ground.img_ptr)
-		return (0);
 	assets.end.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, END, 
 		&assets.end.w, &assets.end.h);
-	if (!assets.end.img_ptr)
-		return (0);
 	assets.poke.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, COLLEC, 
 		&assets.poke.w, &assets.poke.h);
-	if (!assets.poke.img_ptr)
-		return (0);
+	assets.enn1.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, ENN1, 
+		&assets.enn1.w, &assets.enn1.h);
+	assets.enn2.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, ENN2, 
+		&assets.enn2.w, &assets.enn2.h);
 	data->assets = assets;
 	return (1);
 }
@@ -101,11 +107,27 @@ void ft_refresh(t_data *data, t_coord i)
 	else if (data->map[i.x][i.y] == '1')
 		draw_transparency(data, data->assets.wall, i);
 	else if (data->map[i.x][i.y] == 'P')
-		draw_transparency(data, data->assets.character, i);
+	{
+		if (data->charac_ori == 'u')
+			draw_transparency(data, data->assets.charac_up, i);
+		else if (data->charac_ori == 'd')
+			draw_transparency(data, data->assets.charac_down, i);
+		else if (data->charac_ori == 'l')
+			draw_transparency(data, data->assets.charac_left, i);
+		else if (data->charac_ori == 'r')
+			draw_transparency(data, data->assets.charac_right, i);
+	}
 	else if (data->map[i.x][i.y] == 'E')
 		draw_transparency(data, data->assets.end, i);
 	else if (data->map[i.x][i.y] == 'C')
 		draw_transparency(data, data->assets.poke, i);
+	else if (data->map[i.x][i.y] == '2')
+	{
+		if (data->enn_sprite == 0)
+			draw_transparency(data, data->assets.enn1, i);
+		else
+			draw_transparency(data, data->assets.enn2, i);
+	}
 }
 
 void	ft_put_map(t_data *data)

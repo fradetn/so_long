@@ -6,7 +6,7 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 07:49:52 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/15 21:07:08 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/16 00:12:40 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ void	ft_free(t_data *data)
 
 void	ft_free_asset(t_assets assets)
 {
-	free(assets.character.img_ptr);
+	free(assets.charac_up.img_ptr);
+	free(assets.charac_down.img_ptr);
+	free(assets.charac_left.img_ptr);
+	free(assets.charac_right.img_ptr);
 	free(assets.wall.img_ptr);
 	free(assets.ground.img_ptr);
 	free(assets.poke.img_ptr);

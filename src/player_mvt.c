@@ -6,7 +6,7 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 16:56:23 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/15 21:38:01 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/16 00:25:55 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@ void	ft_action(t_data *data, t_coord move)
 		data->map[data->game_obj.player->x][data->game_obj.player->y] = '0';
 		data->nb_poke += 1;
 	}
+	else if (data->map[move.x][move.y] == '2')
+	{
+		ft_printf("DEAD");
+	}
 	else if (data->map[move.x][move.y] == 'E')
 	{
 		ft_printf("END");
@@ -72,17 +76,36 @@ int	ft_move(t_data *data, int x, int y)
 	return (0);
 }
 
+// void	ft_attack(t_data *data)
+// {
+
+// }
+
 int	key_hook(int keycode, t_data *data)
 {
 	(void) data;
 
 	if (keycode == 119)
+	{
+		data->charac_ori = 'u';
 		ft_move(data, -1, 0);
+	}
 	else if (keycode == 115)
+	{
+		data->charac_ori = 'd';
 		ft_move(data, 1, 0);
+	}
 	else if (keycode == 97)
+	{
+		data->charac_ori = 'l';
 		ft_move(data, 0, -1);
+	}
 	else if (keycode == 100)
+	{
+		data->charac_ori = 'r';
 		ft_move(data, 0, 1);
+	}
+	else if (keycode == 32)
+		ft_printf("attack");
 	return (0);
 }

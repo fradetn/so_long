@@ -6,7 +6,7 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 07:34:39 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/15 21:15:54 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/16 00:39:23 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,16 @@
 # include <X11/X.h>
 # include <fcntl.h>
 
-# define CHARAC "./assets/brendon.xpm"
+# define CHARAC_D "./assets/brendon_down.xpm"
+# define CHARAC_U "./assets/brendon_up.xpm"
+# define CHARAC_L "./assets/brendon_left.xpm"
+# define CHARAC_R "./assets/brendon_right.xpm"
 # define WALL "./assets/tree.xpm"
 # define GROUND "./assets/ground.xpm"
 # define END "./assets/house.xpm"
 # define COLLEC "./assets/pokeball.xpm"
+# define ENN1 "./assets/psycho1.xpm"
+# define ENN2 "./assets/psycho2.xpm"
 
 typedef struct s_coord
 {
@@ -44,11 +49,16 @@ typedef struct s_img
 
 typedef struct s_assets
 {
-	t_img	character;
+	t_img	charac_down;
+	t_img	charac_up;
+	t_img	charac_left;
+	t_img	charac_right;
 	t_img	wall;
 	t_img	ground;
 	t_img	poke;
 	t_img	end;
+	t_img	enn1;
+	t_img	enn2;
 }	t_assets;
 
 typedef struct s_game_obj
@@ -56,6 +66,7 @@ typedef struct s_game_obj
 	t_list	*collecs;
 	t_coord	*player;
 	t_coord	*end;
+	t_coord	*enn1;
 }	t_game_obj;
 
 typedef struct s_data
@@ -67,10 +78,9 @@ typedef struct s_data
 	char		**map;
 	int			nb_poke;
 	int			nb_move;
+	char		charac_ori;
+	int			enn_sprite;
 }	t_data;
-
-
-
 
 /*read_file.c*/
 char		**file_to_tab(const char *file);
