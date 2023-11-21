@@ -6,7 +6,7 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 06:07:20 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/15 23:59:17 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/17 16:39:49 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ size_t	check_format(char **tab)
 	size_t		j;
 
 	i = 0;
-	len = ft_strlen(tab[0]);	
+	len = ft_strlen(tab[0]);
 
 	while (tab[i])
 	{

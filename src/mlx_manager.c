@@ -6,7 +6,7 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 19:09:16 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/16 00:39:28 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/21 13:54:02 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,15 @@
 
 int	ft_init_mlx(t_data *data)
 {
+	int	h;
+	int	w;
+	
+	h = 64 * ft_tablen(data->map);
+	w = 64 * ft_strlen(data->map[0]);
 	data->mlx_ptr = mlx_init();
 	if (!data->mlx_ptr)
 		return (1);
-	data->win_ptr = mlx_new_window(data->mlx_ptr, 1920, 1080, "test");
+	data->win_ptr = mlx_new_window(data->mlx_ptr, w, h, "test");
 	if (!data->win_ptr)
 		return (free(data->mlx_ptr), 1);
 	if (!ft_create_images(data))
@@ -36,6 +41,10 @@ int	ft_create_charac(t_data *data, t_assets *assets)
 		CHARAC_L, &assets->charac_left.w, &assets->charac_left.h);
 	assets->charac_right.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, 
 		CHARAC_R, &assets->charac_right.w, &assets->charac_right.h);
+	assets->att1.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, 
+		ATT1, &assets->att1.w, &assets->att1.h);
+	assets->att2.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, 
+		ATT2, &assets->att2.w, &assets->att2.h);
 	return (1);
 }
 
@@ -50,12 +59,16 @@ int	ft_create_images(t_data *data)
 		&assets.ground.w, &assets.ground.h);
 	assets.end.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, END, 
 		&assets.end.w, &assets.end.h);
+	assets.end2.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, END2, 
+		&assets.end2.w, &assets.end2.h);
 	assets.poke.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, COLLEC, 
 		&assets.poke.w, &assets.poke.h);
 	assets.enn1.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, ENN1, 
 		&assets.enn1.w, &assets.enn1.h);
 	assets.enn2.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, ENN2, 
 		&assets.enn2.w, &assets.enn2.h);
+	assets.hud.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, HUD, 
+		&assets.hud.w, &assets.hud.h);
 	data->assets = assets;
 	return (1);
 }
@@ -97,7 +110,27 @@ void draw_transparency(t_data *data, t_img img, t_coord c)
 		i.x++;
 	}
 	ft_put_image(data, cpy, c);
-	free(cpy.img_ptr);
+	mlx_destroy_image(data->mlx_ptr, cpy.img_ptr);
+}
+
+void	ft_draw_charac(t_data *data, t_coord p)
+{	
+	if (data->is_attacking == 1)
+	{
+		if (data->att_i == 0)
+			draw_transparency(data, data->assets.att1, p);
+		else if (data->att_i == 1)
+			draw_transparency(data, data->assets.att2, p);
+	}
+	else if (data->charac_ori == 'u')
+		draw_transparency(data, data->assets.charac_up, p);
+	else if (data->charac_ori == 'd')
+		draw_transparency(data, data->assets.charac_down, p);
+	else if (data->charac_ori == 'l')
+		draw_transparency(data, data->assets.charac_left, p);
+	else if (data->charac_ori == 'r')
+		draw_transparency(data, data->assets.charac_right, p);
+
 }
 
 void ft_refresh(t_data *data, t_coord i)
@@ -108,17 +141,15 @@ void ft_refresh(t_data *data, t_coord i)
 		draw_transparency(data, data->assets.wall, i);
 	else if (data->map[i.x][i.y] == 'P')
 	{
-		if (data->charac_ori == 'u')
-			draw_transparency(data, data->assets.charac_up, i);
-		else if (data->charac_ori == 'd')
-			draw_transparency(data, data->assets.charac_down, i);
-		else if (data->charac_ori == 'l')
-			draw_transparency(data, data->assets.charac_left, i);
-		else if (data->charac_ori == 'r')
-			draw_transparency(data, data->assets.charac_right, i);
+		ft_draw_charac(data, *data->game_obj.player);
 	}
 	else if (data->map[i.x][i.y] == 'E')
-		draw_transparency(data, data->assets.end, i);
+	{
+		if (data->nb_poke == ft_lstsize(data->game_obj.collecs))
+			draw_transparency(data, data->assets.end2, i);
+		else
+			draw_transparency(data, data->assets.end, i);
+	}
 	else if (data->map[i.x][i.y] == 'C')
 		draw_transparency(data, data->assets.poke, i);
 	else if (data->map[i.x][i.y] == '2')

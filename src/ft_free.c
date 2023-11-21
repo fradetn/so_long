@@ -6,7 +6,7 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 07:49:52 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/16 00:12:40 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/21 13:52:18 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,22 @@ void	ft_free(t_data *data)
 {
 	ft_free_go(&data->game_obj);
 	ft_free_tab(data->map);
-	ft_free_asset(data->assets);
+	ft_free_asset(data, &data->assets);
 }
 
-void	ft_free_asset(t_assets assets)
+void	ft_free_asset(t_data *data, t_assets *assets)
 {
-	free(assets.charac_up.img_ptr);
-	free(assets.charac_down.img_ptr);
-	free(assets.charac_left.img_ptr);
-	free(assets.charac_right.img_ptr);
-	free(assets.wall.img_ptr);
-	free(assets.ground.img_ptr);
-	free(assets.poke.img_ptr);
-	free(assets.end.img_ptr);
+	mlx_destroy_image(data->mlx_ptr, assets->charac_up.img_ptr);
+	mlx_destroy_image(data->mlx_ptr, assets->charac_down.img_ptr);
+	mlx_destroy_image(data->mlx_ptr, assets->charac_left.img_ptr);
+	mlx_destroy_image(data->mlx_ptr, assets->charac_right.img_ptr);
+	mlx_destroy_image(data->mlx_ptr, assets->wall.img_ptr);
+	mlx_destroy_image(data->mlx_ptr, assets->ground.img_ptr);
+	mlx_destroy_image(data->mlx_ptr, assets->poke.img_ptr);
+	mlx_destroy_image(data->mlx_ptr, assets->end.img_ptr);
+	mlx_destroy_image(data->mlx_ptr, assets->end2.img_ptr);
+	mlx_destroy_image(data->mlx_ptr, assets->enn1.img_ptr);
+	mlx_destroy_image(data->mlx_ptr, assets->enn2.img_ptr);
 }
 
 void	ft_free_go(t_game_obj *go)
@@ -42,6 +45,7 @@ void	ft_free_go(t_game_obj *go)
 	free(go->end);
 	free(go->player);
 	ft_lstclear(&(go->collecs), &ft_free_coord);
+	ft_lstclear(&(go->enn1), &ft_free_coord);
 }
 
 void	ft_free_tab(char **tab)

@@ -6,7 +6,7 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 00:34:00 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/16 00:42:02 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/20 01:27:36 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_coord	*get_char_pos(char **tab, char c)
 * Enregistre les coordonees de tous les
 * collectibles dans une liste chainee
 */
-t_list	*get_all_collec(char **tab)
+t_list	*get_all_char(char **tab, char c)
 {
 	t_list	*list;
 	t_list	*new;
@@ -71,7 +71,7 @@ t_list	*get_all_collec(char **tab)
 		y = 0;
 		while (tab[x][y])
 		{
-			if (tab[x][y] == 'C')
+			if (tab[x][y] == c)
 			{
 				coord = create_coord(x, y);
 				new = ft_lstnew(coord);
@@ -91,9 +91,9 @@ t_game_obj	fill_objs(char **tab)
 	// game_obj = (t_game_obj *)malloc(sizeof(t_game_obj));
 	// if (!game_obj)
 	// 	return (NULL);
-	game_obj.collecs = get_all_collec(tab);
+	game_obj.collecs = get_all_char(tab, 'C');
 	game_obj.player = get_char_pos(tab, 'P');
 	game_obj.end = get_char_pos(tab, 'E');
-	game_obj.enn1 = get_char_pos(tab, '2');
+	game_obj.enn1 = get_all_char(tab, '2');
 	return (game_obj);
 }
