@@ -6,18 +6,18 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 07:39:27 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/17 16:45:56 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/22 19:30:53 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void aff(void *co)
+void	aff(void *co)
 {
 	ft_printf("(%d, %d)\n", ((t_coord *)co)->x, ((t_coord *)co)->y);
 }
 
-void aff_tab(char **tab)
+void	aff_tab(char **tab)
 {
 	int	i;
 
@@ -52,5 +52,18 @@ char	**ft_tabdup(char **tab)
 		i++;
 	}
 	cpy[i] = 0;
+	return (cpy);
+}
+
+t_img	ft_img_cpy(t_data *data, t_img *img)
+{
+	t_img	cpy;
+
+	cpy.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, \
+	GROUND, &cpy.w, &cpy.h);
+	cpy.data = mlx_get_data_addr(cpy.img_ptr, &cpy.bpp, \
+	&cpy.size_line, &cpy.endian);
+	img->data = mlx_get_data_addr(img->img_ptr, &img->bpp, \
+	&img->size_line, &img->endian);
 	return (cpy);
 }

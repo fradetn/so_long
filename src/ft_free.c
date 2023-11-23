@@ -6,7 +6,7 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 07:49:52 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/21 14:08:05 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/22 21:05:13 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	ft_free_inv(t_data *data)
 {
 	ft_free_go(&data->game_obj);
 	ft_free_tab(data->map);
-	free(data->mlx_ptr);
 }
 
 void	ft_free(t_data *data)
@@ -41,6 +40,8 @@ void	ft_free_asset(t_data *data, t_assets *assets)
 	mlx_destroy_image(data->mlx_ptr, assets->end2.img_ptr);
 	mlx_destroy_image(data->mlx_ptr, assets->enn1.img_ptr);
 	mlx_destroy_image(data->mlx_ptr, assets->enn2.img_ptr);
+	mlx_destroy_image(data->mlx_ptr, assets->enn2_1.img_ptr);
+	mlx_destroy_image(data->mlx_ptr, assets->enn2_2.img_ptr);
 	mlx_destroy_image(data->mlx_ptr, assets->hud.img_ptr);
 	mlx_destroy_image(data->mlx_ptr, assets->att1.img_ptr);
 	mlx_destroy_image(data->mlx_ptr, assets->att2.img_ptr);
@@ -50,13 +51,14 @@ void	ft_free_go(t_game_obj *go)
 {
 	free(go->end);
 	free(go->player);
-	ft_lstclear(&(go->collecs), &ft_free_coord);
-	ft_lstclear(&(go->enn1), &ft_free_coord);
+	ft_lstclear(&(go->collecs), &free);
+	ft_lstclear(&(go->enn1), &free);
+	ft_lstclear(&(go->enn2), &free);
 }
 
 void	ft_free_tab(char **tab)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (tab[i])
@@ -66,9 +68,4 @@ void	ft_free_tab(char **tab)
 	}
 	free(tab[i]);
 	free(tab);
-}
-
-void	ft_free_coord(void *coord)
-{
-	free(coord);
 }

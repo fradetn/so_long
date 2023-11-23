@@ -6,7 +6,7 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 06:07:20 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/17 16:39:49 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/22 21:42:49 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ size_t	check_format(char **tab)
 
 	i = 0;
 	len = ft_strlen(tab[0]);
-
 	while (tab[i])
 	{
 		if (ft_strlen(tab[i]) != len)
@@ -70,33 +69,27 @@ int	check_objs(char **tab)
 	return (1);
 }
 
-int	check_path(char **tab, t_coord *actual ,t_coord *end)
+int	check_path_rec(char **tab, t_coord *actual, t_coord *end)
 {
-	t_list **head;
-	t_list *voisins;
-	t_list *tmp;
+	t_list		**head;
+	t_list		*voisins;
+	t_list		*tmp;
 
 	voisins = NULL;
 	get_voisins(tab, &voisins, actual);
-	if (voisins)
-	{
-		head = &voisins;
-		tmp = voisins;
-	}
-	while (is_end(actual, end) != 1 && tmp != NULL)
+	head = &voisins;
+	tmp = voisins;
+	if (is_end_near(&voisins, end) == 1)
+		return (ft_lstclear(head, &free), 0);
+	while (tmp)
 	{
 		tab[actual->x][actual->y] = '1';
 		actual = tmp->content;
-		get_voisins(tab, &voisins, actual);
+		if (check_path_rec(tab, actual, end) == 0)
+			return (ft_lstclear(head, &free), 0);
 		tmp = tmp->next;
 	}
-	if (is_end(actual, end) && head)
-	{
-		ft_lstclear(head, &ft_free_coord);
-		return (0);
-	}
-	ft_lstclear(head, &ft_free_coord);
-	return (1);
+	return (ft_lstclear(head, &free), 1);
 }
 
 int	check_collecs(t_data *data, t_coord *start, t_list *collecs)
@@ -107,7 +100,7 @@ int	check_collecs(t_data *data, t_coord *start, t_list *collecs)
 	{
 		cpy = ft_tabdup(data->map);
 		cpy[data->game_obj.end->x][data->game_obj.end->y] = '1';
-		if (check_path(cpy, start, collecs->content) == 1)
+		if (check_path_rec(cpy, start, collecs->content) == 1)
 		{
 			ft_printf("Le joueur ne peut pas atteindre un collectible !\n");
 			ft_free_tab(cpy);
@@ -134,14 +127,14 @@ int	check_map(t_data *data)
 		return (1);
 	}
 	cpy = ft_tabdup(data->map);
-	if (check_path(cpy, data->game_obj.player, data->game_obj.end) == 1)
+	if (check_path_rec(cpy, data->game_obj.player, data->game_obj.end) == 1)
 	{
 		ft_printf("Le joueur ne peut pas atteindre la sortie !\n");
 		ft_free_tab(cpy);
 		return (1);
 	}
 	ft_free_tab(cpy);
-	if (check_collecs(data, data->game_obj.player, 
+	if (check_collecs(data, data->game_obj.player, \
 	data->game_obj.collecs) == 1)
 		return (1);
 	return (0);

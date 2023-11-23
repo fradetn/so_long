@@ -6,7 +6,7 @@
 /*   By: nfradet <nfradet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 06:07:20 by nfradet           #+#    #+#             */
-/*   Updated: 2023/11/10 15:25:31 by nfradet          ###   ########.fr       */
+/*   Updated: 2023/11/23 17:36:29 by nfradet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,21 @@ int	check_char(char c1, char c2, int is_c)
 	if (c1 == c2)
 		return (1);
 	return (0);
-} 
+}
+
+int	is_end_near(t_list **voisins, t_coord *end)
+{
+	t_list	*tmp;
+
+	tmp = *voisins;
+	while (tmp)
+	{
+		if (is_end(tmp->content, end) == 1)
+			return (1);
+		tmp = tmp->next;
+	}
+	return (0);
+}
 
 int	is_end(t_coord *actual, t_coord *end)
 {
@@ -48,7 +62,7 @@ int	is_end(t_coord *actual, t_coord *end)
 static void	get_voisins_y(char **tab, t_list **list, t_coord *actual)
 {
 	t_list	*new;
-	t_coord *tmp;
+	t_coord	*tmp;
 
 	if (tab[actual->x][actual->y + 1] != '1')
 	{
@@ -67,7 +81,7 @@ static void	get_voisins_y(char **tab, t_list **list, t_coord *actual)
 void	get_voisins(char **tab, t_list **voisins, t_coord *actual)
 {
 	t_list	*new;
-	t_coord *tmp;
+	t_coord	*tmp;
 
 	if (tab[actual->x + 1][actual->y] != '1')
 	{
